@@ -9,7 +9,7 @@ app.use(express.json());
 
 
 
-// connectDB()
+connectDB()
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, World!');
 });
