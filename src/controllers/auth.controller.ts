@@ -1,6 +1,7 @@
 import e, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import User from "../models/User";
+import jwt from 'jsonwebtoken';
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -25,33 +26,25 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
+// how to cookieparse ,jwt ,npm install
+// npm install cookie-parser jsonwebtoken
+// @types/jsonwebtoken @types/cookie-parser    
+
 export const login = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    
-    if (!email || !password) {
-      res.status(400).json({ error: "Email and password are required" });
-      return;
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      res.status(400).json({ error: "Invalid credentials" });
-      return;
-    }
-
-    if (!user.password || typeof user.password !== "string") {
-      res.status(400).json({ error: "Invalid credentials" });
-      return;
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      res.status(400).json({ error: "Invalid credentials" });
-      return;
-    }
-
-    res.status(200).json({ message: "Login successful", user });
-  } catch (err) {
-    res.status(500).json({ error: 'Login failed' });
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (
+    !user ||
+    !user.password ||
+    !(await bcrypt.compare(password, user.password as string))
+  ) {
+    res.status(401).json({ message: 'Invalid credentials' });
+    return;
   }
-}   
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
+  res.cookie('token', token).json({ message: 'Logged in', token });
+};
+
+export const logout = (req: Request, res: Response) => {
+  res.clearCookie('token').json({ message: 'Logged out' });
+};
