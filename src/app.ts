@@ -4,6 +4,7 @@ import connectDB from './config/db';
 import authRoutes from './routes/auth.routes';
 dotenv.config();
 const app=express();
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 
@@ -15,6 +16,6 @@ app.get('/api', (req: Request, res: Response) => {
   res.send('Hello, World!');
 });
 
-app.listen(5000, () => {
-  console.log(`Server is running on port 5000`);
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
 });
