@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.signup = void 0;
+exports.logout = exports.login = exports.signup = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const User_1 = __importDefault(require("../models/User"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password } = req.body;
@@ -36,31 +37,23 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
+// how to cookieparse ,jwt ,npm install
+// npm install cookie-parser jsonwebtoken
+// @types/jsonwebtoken @types/cookie-parser    
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            res.status(400).json({ error: "Email and password are required" });
-            return;
-        }
-        const user = yield User_1.default.findOne({ email });
-        if (!user) {
-            res.status(400).json({ error: "Invalid credentials" });
-            return;
-        }
-        if (!user.password || typeof user.password !== "string") {
-            res.status(400).json({ error: "Invalid credentials" });
-            return;
-        }
-        const isMatch = yield bcrypt_1.default.compare(password, user.password);
-        if (!isMatch) {
-            res.status(400).json({ error: "Invalid credentials" });
-            return;
-        }
-        res.status(200).json({ message: "Login successful", user });
+    const { email, password } = req.body;
+    const user = yield User_1.default.findOne({ email });
+    if (!user ||
+        !user.password ||
+        !(yield bcrypt_1.default.compare(password, user.password))) {
+        res.status(401).json({ message: 'Invalid credentials' });
+        return;
     }
-    catch (err) {
-        res.status(500).json({ error: 'Login failed' });
-    }
+    const token = jsonwebtoken_1.default.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    res.cookie('token', token).json({ message: 'Logged in', token });
 });
 exports.login = login;
+const logout = (req, res) => {
+    res.clearCookie('token').json({ message: 'Logged out' });
+};
+exports.logout = logout;
