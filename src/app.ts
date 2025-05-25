@@ -1,16 +1,17 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
+import authRoutes from './routes/auth.routes';
 dotenv.config();
 const app=express();
 
 app.use(express.json());
 
-// app.use('/api/auth', authRoutes);
-// app.use('/api/storage', storageRoutes);
+
 
 connectDB()
-app.get('/', (req: Request, res: Response) => {
+app.use('/api/auth', authRoutes);
+app.get('/api', (req: Request, res: Response) => {
   res.send('Hello, World!');
 });
 
