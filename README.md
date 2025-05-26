@@ -57,7 +57,11 @@ JWT_SECRET=your_jwt_secret
 ```bash
 npm run dev
 ```
+### 🌐 Base URL
 
+```bash
+https://storage-management-system-backend-three.vercel.app
+```
 ---
 
 ## 🔐 Authentication
@@ -87,7 +91,7 @@ Logout user (handled client-side by removing token).
 
 ---
 
-## 📁 File Management Routes
+## 📁 File Management Routes (Authorization: Bearer <your_token> Required)
 
 ### `POST /api/files`
 Create a new file (requires authentication).
@@ -121,7 +125,7 @@ Filter files by type (e.g., `pdf`, `image`).
 
 ---
 
-## 📂 Folder Management Routes
+## 📂 Folder Management Routes  (Authorization: Bearer <your_token> Required)
 
 ### `POST /api/folders`
 Create a new folder.
