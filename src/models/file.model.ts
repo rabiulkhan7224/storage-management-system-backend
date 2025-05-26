@@ -1,4 +1,4 @@
-import { model, Schema, Types } from "mongoose";
+import {  model, Schema, Types } from "mongoose";
 import { IFile } from "../types/file.types";
 
 const fileSchema = new Schema<IFile>({
@@ -9,4 +9,6 @@ const fileSchema = new Schema<IFile>({
   ownerId: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
-export default model<IFile>('File', fileSchema);
+
+const File= model<IFile>('File', fileSchema);
+export default File;
