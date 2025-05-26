@@ -7,7 +7,7 @@ export interface IFile {
   name: string;
   url: string;
   type: FileType;
-  folderId?: string;
+  folderId?: Types.ObjectId;
   ownerId: Types.ObjectId;
   createdAt?: Date;
 }

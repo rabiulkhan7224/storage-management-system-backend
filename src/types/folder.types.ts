@@ -1,7 +1,9 @@
+import { Types } from "mongoose";
+
 export interface IFolder {
   _id: string;
   name: string;
-  parentId?: string;
-  ownerId: string;
+  parentId?: Types.ObjectId;
+  ownerId: Types.ObjectId;
   createdAt?: Date;
 }
