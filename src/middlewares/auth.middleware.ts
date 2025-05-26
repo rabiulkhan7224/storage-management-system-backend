@@ -7,15 +7,15 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     try {
         const token = req.headers.authorization?.split(' ')[1];
         if (!token) {
-            res.status(401).json({ error: 'Unauthorized' });
+            res.status(401).json({ error: 'Unauthorized please token give me' });
             return
         }
 
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded.user._id)
         if (!user){
-            res.status(401).json({ error: 'Unauthorized' });
+            res.status(401).json({ error: "forbidden" });
             return;
         }
         req.user = { _id: user._id.toString() };

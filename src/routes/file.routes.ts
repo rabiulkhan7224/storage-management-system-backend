@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createFile, deleteFile, duplicateFile, renameFile } from "../controllers/file.controller";
+import { createFile, deleteFile, duplicateFile, getFile, getFiles, getFilesByDate, getFilesByFolder, getFilesBySearch, getFilesByType, renameFile } from "../controllers/file.controller";
 
 const router = Router();
 router.post('/', createFile);
@@ -13,6 +13,24 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ error: 'Failed to delete file' });
     }
 });
+router.get('/',getFiles)
+router.get('/:id',getFile)
+router.get('/',getFiles)
+router.get('/folder/:folderId', getFilesByFolder);
+// getFilesBySearch
+router.get('/search',  getFilesBySearch); // সার্চ কোয়েরি দিয়ে ফাইল পাওয়া
+router.get('/by-date',  getFilesByDate); // তারিখ অনুযায়ী ফাইল পাওয়া
+router.get('/by-type',  getFilesByType); // টাইপ অনুযায়ী ফাইল পাওয়া
+
+
+
+
+
+
+
+
+
+
 
 const fileRoutes = router;
 export default fileRoutes;

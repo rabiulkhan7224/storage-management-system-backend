@@ -26,9 +26,7 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-// how to cookieparse ,jwt ,npm install
-// npm install cookie-parser jsonwebtoken
-// @types/jsonwebtoken @types/cookie-parser    
+
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -41,7 +39,7 @@ export const login = async (req: Request, res: Response) => {
     res.status(401).json({ message: 'Invalid credentials' });
     return;
   }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
+  const token = jwt.sign({user:user}, process.env.JWT_SECRET!, { expiresIn: '1d' });
   res.cookie('token', token).json({ message: 'Logged in', token });
 };
 

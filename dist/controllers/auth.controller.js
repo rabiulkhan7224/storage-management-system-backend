@@ -37,9 +37,6 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
-// how to cookieparse ,jwt ,npm install
-// npm install cookie-parser jsonwebtoken
-// @types/jsonwebtoken @types/cookie-parser    
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield User_1.default.findOne({ email });
@@ -49,7 +46,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(401).json({ message: 'Invalid credentials' });
         return;
     }
-    const token = jsonwebtoken_1.default.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const token = jsonwebtoken_1.default.sign({ user: user }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.cookie('token', token).json({ message: 'Logged in', token });
 });
 exports.login = login;

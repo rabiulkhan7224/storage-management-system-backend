@@ -44,3 +44,58 @@ export const deleteFile = async (req: Request, res: Response) => {
 
     res.json({ message: 'File deleted successfully' });
 }
+export const getFile = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const file = await File.findById(id);
+    if (!file) {
+        res.status(404).json({ error: 'File not found' });
+        return;
+    }   
+    res.json(file);
+};
+export const getFiles = async (req: AuthenticatedRequest, res: Response) => {
+    const files = await File.find({ ownerId: req.user!._id });
+    res.json(files);
+};
+export const getFilesByFolder = async (req: AuthenticatedRequest, res: Response) => {
+    const { folderId } = req.params;
+    const files = await File.find({ ownerId: req.user!._id, folderId });
+    res.json(files);
+};
+export const getFilesBySearch = async (req: AuthenticatedRequest, res: Response) => {
+    const { search } = req.query;
+    const files = await File.find({
+        ownerId: req.user!._id,
+        name: { $regex: search as string, $options: 'i' }
+    });
+    res.json(files);
+};
+
+// date by getFilesByDate
+export const getFilesByDate = async (req: AuthenticatedRequest, res: Response) => { 
+    const { date } = req.query;
+    if (!date) {
+        res.status(400).json({ error: 'Date is required' });
+        return;
+    }
+    const files = await File.find({
+        ownerId: req.user!._id,
+        createdAt: {
+            $gte: new Date(date as string),
+            $lt: new Date(new Date(date as string).setDate(new Date(date as string).getDate() + 1))
+        }
+    });
+    res.json(files);
+}
+export const getFilesByType = async (req: AuthenticatedRequest, res: Response) => {
+    const { type } = req.query;
+    if (!type) {
+        res.status(400).json({ error: 'Type is required' });
+        return;
+    }
+    const files = await File.find({
+        ownerId: req.user!._id,
+        type: type as string
+    });
+    res.json(files);
+};
