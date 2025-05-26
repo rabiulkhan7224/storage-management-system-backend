@@ -14,4 +14,5 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-export default router;
+const fileRoutes = router;
+export default fileRoutes;

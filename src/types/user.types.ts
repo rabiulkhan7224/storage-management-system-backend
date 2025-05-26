@@ -8,3 +8,7 @@ export interface Iuser{
     createdAt?: Date;
     updatedAt?: Date;
 }
+export interface IAuthTokenPayload {
+  userId: string;
+  email: string;
+}
