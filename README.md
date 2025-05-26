@@ -1,6 +1,6 @@
 # 📦 Storage Management Backend
 
-A secure and scalable backend system for a file and folder storage management application built with **Node.js**, **Express**, and **MongoDB** using **TypeScript**.
+A backend API for a cloud-based file and folder storage system. It supports user authentication, file and folder operations, and advanced search functionalities.
 
 ---
 
@@ -34,7 +34,7 @@ src/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/storage-management-backend.git
+https://github.com/rabiulkhan7224/storage-management-system-backend.git
 cd storage-management-backend
 ```
 
@@ -144,7 +144,263 @@ Get all folders for the authenticated user.
 
 ---
 
+
+
+
+
+## 📘 API Documentation (with Sample Requests)
+
+### 🔐 Authentication
+
+**Signup**
+
+```http
+POST /api/auth/signup
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name":"Your name"
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+
+**Login**
+
+```http
+POST /api/auth/login
+```
+
+**Body (JSON):**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "<JWT Token>"
+}
+```
+
+**Logout**
+
+```http
+POST /api/auth/logout
+```
+
+*Note: Logout is handled on the client by deleting the token.*
+
+---
+
+### 📁 File Management
+
+**Create File**
+
+```http
+POST /api/files
+Authorization: Bearer <token>
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name": "documents2",
+        "url": "https://example.com/document2.pdf",
+        "type": "docx",
+        "folderId"
+}
+```
+
+**Rename File**
+
+```http
+PUT /api/files/rename/:id
+Authorization: Bearer <token>
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name": "updated_report.pdf"
+}
+```
+
+**Duplicate File**
+
+```http
+POST /api/files/duplicate/:id
+Authorization: Bearer <token>
+```
+
+**Delete File**
+
+```http
+DELETE /api/files/:id
+Authorization: Bearer <token>
+```
+
+**Get Single File**
+
+```http
+GET /api/files/:id
+Authorization: Bearer <token>
+```
+
+**Get All Files**
+
+```http
+GET /api/files
+Authorization: Bearer <token>
+```
+
+**Get Files by Folder**
+
+```http
+GET /api/files/folder/:folderId
+Authorization: Bearer <token>
+```
+
+**Search Files**
+
+```http
+GET /api/files/search?search=keyboard
+Authorization: Bearer <token>
+```
+
+**Files by Date**
+
+```http
+GET /api/files/by-date?date=2025-05-26
+Authorization: Bearer <token>
+```
+
+**Files by Type**
+
+```http
+GET /api/files/by-type?type=image
+Authorization: Bearer <token>
+```
+
+---
+
+### 📂 Folder Management
+
+**Create Folder**
+
+```http
+POST /api/folders
+Authorization: Bearer <token>
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name": "My Documents"
+}
+```
+
+**Rename Folder**
+
+```http
+PUT /api/folders/rename/:id
+Authorization: Bearer <token>
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name": "Renamed Folder"
+}
+```
+
+**Delete Folder**
+
+```http
+DELETE /api/folders/:id
+Authorization: Bearer <token>
+```
+
+**Get Single Folder**
+
+```http
+GET /api/folders/:id
+Authorization: Bearer <token>
+```
+
+**Get All Folders**
+
+```http
+GET /api/folders
+Authorization: Bearer <token>
+```
+
+---
+
+## 🧪 Running the Project
+
+1. Clone the repository:
+
+   ```bash
+   https://github.com/rabiulkhan7224/storage-management-system-backend.git
+   cd storage-management-backend
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file:
+
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/storageDB
+   JWT_SECRET=your_jwt_secret
+   ```
+
+4. Run the server:
+
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 🔒 Authentication Middleware
+
+All file and folder routes are protected using JWT. Attach a Bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer <your_token>
+```
+
+---
+
 ## 👨‍💻 Author
 
 **Md Rabiul Hasan**
 MERN Stack Developer
+
+## 📬 Contact
+
+Maintainer: [Md Rabiul Khan](mailto:mdrabiulkhanbabo@gmail.com)
+
+---
+
+## 📄 License
+
+MIT License

@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 connectDB()
 app.use('/api/auth', authRoutes);
-app.use('/api/files', authMiddleware, fileRoutes);
+app.use('/api/files', authMiddleware,  fileRoutes);
 app.use('/api/folders', authMiddleware, folderRoutes);
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ message: 'Welcome to the API' });

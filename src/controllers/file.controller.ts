@@ -62,11 +62,17 @@ export const getFilesByFolder = async (req: AuthenticatedRequest, res: Response)
     const files = await File.find({ ownerId: req.user!._id, folderId });
     res.json(files);
 };
+// getFilesBySearch
+// api/files/search?search=example
 export const getFilesBySearch = async (req: AuthenticatedRequest, res: Response) => {
     const { search } = req.query;
+    if (!search || typeof search !== 'string' || !search.trim()) {
+         res.status(400).json({ error: 'Search query is required' });
+         return
+    }
     const files = await File.find({
         ownerId: req.user!._id,
-        name: { $regex: search as string, $options: 'i' }
+        name: { $regex: search, $options: 'i' }
     });
     res.json(files);
 };
@@ -74,6 +80,8 @@ export const getFilesBySearch = async (req: AuthenticatedRequest, res: Response)
 // date by getFilesByDate
 export const getFilesByDate = async (req: AuthenticatedRequest, res: Response) => { 
     const { date } = req.query;
+    console.log("date", date);
+    // to string date 
     if (!date) {
         res.status(400).json({ error: 'Date is required' });
         return;
@@ -87,8 +95,12 @@ export const getFilesByDate = async (req: AuthenticatedRequest, res: Response) =
     });
     res.json(files);
 }
+
+
+// api/files/date?date=2023-10-01
 export const getFilesByType = async (req: AuthenticatedRequest, res: Response) => {
     const { type } = req.query;
+    // const{type}=req.body
     if (!type) {
         res.status(400).json({ error: 'Type is required' });
         return;

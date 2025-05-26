@@ -2,6 +2,8 @@ import {  model, Schema, Types } from "mongoose";
 import { IFile } from "../types/file.types";
 
 const fileSchema = new Schema<IFile>({
+  
+
   name: String,
   url: String,
   type: String,
